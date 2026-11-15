@@ -1,8 +1,8 @@
-# 喵館誌｜台灣貓咪咖啡廳 Wiki
+# 喵咖日誌｜台灣貓咪咖啡廳 Wiki
 
 一個由 AI 依照 **[AGENTS.md](./AGENTS.md)** 規則持續整理的台灣貓咪咖啡廳知識庫，參考 Andrej Karpathy 的「LLM Wiki」模式。
 
-- 🌐 網站：`https://<你的帳號>.github.io/<repo 名稱>/`
+- 🌐 網站：`https://Lai27330.github.io/cat_cafe_wiki_recommendation/`
 - 📘 AI 規則書：[AGENTS.md](./AGENTS.md)（Claude Code 透過 [CLAUDE.md](./CLAUDE.md) 自動讀取）
 
 ## 目前內容
