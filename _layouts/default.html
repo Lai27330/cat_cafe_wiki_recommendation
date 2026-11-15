@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% if page.title and page.url != "/" %}{{ page.title }}｜{% endif %}{{ site.title }}</title>
+  <meta name="description" content="{{ page.summary | default: site.description }}">
+  <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐾</text></svg>">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="{{ '/' | relative_url }}">{% include art/cat-face.svg %}<span>喵館誌</span><small>台灣貓咪咖啡廳 Wiki</small></a>
+      <nav class="site-nav">
+        <a href="{{ '/' | relative_url }}#cafes">店家</a>
+        <a href="{{ '/wiki/overview.html' | relative_url }}">總覽</a>
+        <a href="{{ '/' | relative_url }}#topics">主題</a>
+        <a href="{{ '/' | relative_url }}#decks">簡報</a>
+        <a href="{{ '/wiki/index.html' | relative_url }}">目錄</a>
+      </nav>
+    </div>
+  </header>
+
+  {{ content }}
+
+  <footer class="site-footer">
+    <div class="peek-wrap">{% include art/cat-peek.svg %}</div>
+    <div class="wrap">
+      <p>喵館誌是依照 <code>AGENTS.md</code> 規則、由 AI 持續整理的貓咪咖啡廳知識庫。內容整理自網路推薦文，每條資訊都附有來源。</p>
+      <p><strong>資訊可能已經變動，出發前請查看店家官方公告。</strong></p>
+      <p><a href="{{ '/wiki/log.html' | relative_url }}">更新日誌</a></p>
+    </div>
+  </footer>
+</body>
+</html>

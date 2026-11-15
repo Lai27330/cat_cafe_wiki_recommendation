@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<!-- 喵館誌簡報｜由 decks/_template.html 複製；依據 slides/2026-11-15-first-visit-guide.md -->
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第一次去貓咖，先看這 3 分鐘｜喵館誌</title>
+<style>
+  :root {
+    /* 簡報配色：霧綠色系（AGENTS.md 第 10.4 節）。#A3B5A6、#8A9A8C 只用於背景與色塊；文字用深綠 --deep 確保可讀 */
+    --bg: #f3f6f2; --paper: #fbfcfa; --ink: #3a453d; --soft: #66736a;
+    --line: #d7e0d8; --mist: #dce5dd; --sage: #a3b5a6; --sage-dark: #8a9a8c; --deep: #4e5c51;
+    --font: "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--ink); font-family: var(--font); overflow: hidden; }
+  .slide a { color: var(--deep); text-decoration-color: var(--sage); text-underline-offset: 3px; font-weight: 700; }
+  .deck { position: relative; width: 100vw; height: 100vh; }
+  .slide { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 6vh 8vw 10vh; opacity: 0; visibility: hidden; transform: translateX(24px); transition: opacity .35s, transform .35s, visibility .35s; }
+  .slide.active { opacity: 1; visibility: visible; transform: none; }
+  .slide.prev { transform: translateX(-24px); }
+  .kicker { color: var(--deep); font-weight: 800; letter-spacing: .12em; background: var(--mist); display: inline-block; align-self: flex-start; padding: .15em .9em; border-radius: 999px; font-size: clamp(13px, 1.4vw, 18px); margin: 0 0 1.2vh; }
+  h1 { font-size: clamp(34px, 6vw, 80px); line-height: 1.2; margin: 0 0 2vh; }
+  h2 { font-size: clamp(28px, 4.2vw, 56px); line-height: 1.25; margin: 0 0 1.5vh; }
+  .lead { font-size: clamp(18px, 2.2vw, 30px); color: var(--soft); margin: 0 0 4vh; line-height: 1.6; }
+  .slide ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 1.6vh; }
+  .slide li { font-size: clamp(18px, 2.2vw, 30px); line-height: 1.5; padding-left: 1.6em; position: relative; }
+  .slide li::before { content: ""; position: absolute; left: .2em; top: .55em; width: .55em; height: .55em; border-radius: 50%; background: var(--sage-dark); }
+
+  /* cover */
+  [data-layout=cover] { display: grid; grid-template-columns: 1.2fr 1fr; align-items: center; gap: 4vw; background: radial-gradient(circle at 85% 20%, var(--mist) 0 22vh, transparent 22.1vh), linear-gradient(160deg, var(--sage) 0%, var(--mist) 45%, var(--bg) 80%); }
+  [data-layout=cover] .art svg { width: 100%; max-height: 60vh; }
+  /* point */
+  [data-layout=point] { align-items: flex-start; }
+  .big { font-size: clamp(64px, 14vw, 200px); font-weight: 900; color: var(--deep); line-height: 1; margin: 0 0 2vh; }
+  .big small { font-size: .35em; color: var(--soft); font-weight: 700; }
+  .banner { display: inline-block; background: var(--deep); color: #fff; font-size: clamp(22px, 3.2vw, 44px); font-weight: 800; padding: .4em .9em; border-radius: 999px; margin: 0 0 4vh; }
+  /* cards & compare */
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2vw; }
+  .card { background: var(--paper); border: 1px solid var(--line); border-radius: 24px; padding: 3vh 2vw; box-shadow: 0 8px 24px rgba(60,80,65,.10); border-top: 6px solid var(--sage); }
+  .card .icon { font-size: clamp(30px, 4vw, 54px); }
+  .card h3 { font-size: clamp(20px, 2.4vw, 32px); margin: 1vh 0 .6vh; }
+  .card p { font-size: clamp(15px, 1.6vw, 22px); color: var(--soft); margin: 0; line-height: 1.5; }
+  .tip { margin-top: 3vh; background: var(--mist); color: var(--deep); border-left: 8px solid var(--sage-dark); border-radius: 16px; padding: 1.6vh 1.6vw; font-size: clamp(16px, 1.9vw, 26px); font-weight: 700; }
+  /* ending */
+  [data-layout=ending] { background: linear-gradient(200deg, var(--sage), var(--mist) 60%); }
+  .src { font-size: clamp(15px, 1.7vw, 22px) !important; color: var(--soft); }
+
+  /* 條列、重點頁右下角的淡色貓掌浮水印 */
+  [data-layout=list], [data-layout=point] { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cg fill='%23A3B5A6' fill-opacity='.35'%3E%3Cellipse cx='20' cy='27' rx='9.5' ry='8'/%3E%3Cellipse cx='9' cy='16' rx='4' ry='5'/%3E%3Cellipse cx='16' cy='9.5' rx='4' ry='5'/%3E%3Cellipse cx='24' cy='9.5' rx='4' ry='5'/%3E%3Cellipse cx='31' cy='16' rx='4' ry='5'/%3E%3C/g%3E%3C/svg%3E"), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cg fill='%238A9A8C' fill-opacity='.22'%3E%3Cellipse cx='20' cy='27' rx='9.5' ry='8'/%3E%3Cellipse cx='9' cy='16' rx='4' ry='5'/%3E%3Cellipse cx='16' cy='9.5' rx='4' ry='5'/%3E%3Cellipse cx='24' cy='9.5' rx='4' ry='5'/%3E%3Cellipse cx='31' cy='16' rx='4' ry='5'/%3E%3C/g%3E%3C/svg%3E"); background-repeat: no-repeat; background-size: 22vh, 14vh; background-position: right 8vw bottom 12vh, right 22vw bottom 30vh; }
+
+  /* chrome */
+  .bar { position: fixed; left: 0; bottom: 0; height: 6px; background: var(--sage-dark); transition: width .35s; z-index: 5; }
+  .count { position: fixed; right: 2.4vw; bottom: 2.4vh; font-size: 14px; color: var(--soft); z-index: 5; }
+  .brand { position: fixed; left: 2.4vw; bottom: 2.4vh; font-size: 14px; color: var(--soft); font-weight: 700; z-index: 5; }
+  .notes { display: none; position: fixed; left: 50%; bottom: 6vh; transform: translateX(-50%); width: min(820px, 90vw); background: rgba(58,69,61,.94); color: #fff; border-radius: 14px; padding: 14px 18px; font-size: 16px; line-height: 1.6; }
+  body.show-notes .slide.active .notes { display: block; }
+  .hint { position: fixed; top: 2vh; right: 2.4vw; font-size: 12px; color: var(--soft); opacity: .8; }
+
+  @media (max-width: 720px) {
+    [data-layout=cover] { grid-template-columns: 1fr; }
+    [data-layout=cover] .art { order: -1; max-width: 55vw; }
+    .slide { padding: 5vh 7vw 10vh; }
+    .hint { display: none; }
+  }
+  @media print {
+    @page { size: 1280px 720px; margin: 0; }
+    html, body { overflow: visible; height: auto; }
+    .deck { height: auto; }
+    .slide { position: relative; opacity: 1; visibility: visible; transform: none; width: 1280px; height: 720px; page-break-after: always; break-after: page; }
+    .bar, .count, .hint, .notes { display: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="deck">
+<main>
+  <!-- 依據：slides/2026-11-15-first-visit-guide.md（每個 section 對應逐頁稿一頁） -->
+  <section class="slide" data-layout="cover">
+    <div>
+      <p class="kicker">喵館誌｜3 分鐘簡報</p>
+      <h1>第一次去貓咖，<br>先看這 3 分鐘</h1>
+      <p class="lead">出發前查三件事，到店後讓貓決定。</p>
+    </div>
+    <div class="art"><svg class="cat-art" viewBox="0 0 280 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Q 版奶茶色貓咪插圖">
+  <ellipse cx="140" cy="222" rx="80" ry="9" fill="#ead9c3"/>
+  <!-- 漂浮的貓掌與愛心 -->
+  <g fill="#f2b84b" opacity=".9"><ellipse cx="34" cy="70" rx="7" ry="6"/><ellipse cx="26" cy="61" rx="3" ry="3.6"/><ellipse cx="31.5" cy="56" rx="3" ry="3.6"/><ellipse cx="37.5" cy="56" rx="3" ry="3.6"/><ellipse cx="43" cy="61" rx="3" ry="3.6"/></g>
+  <g fill="#ee8a7a" opacity=".85" transform="rotate(18 246 120)"><ellipse cx="246" cy="128" rx="6" ry="5"/><ellipse cx="239" cy="120" rx="2.6" ry="3.1"/><ellipse cx="244" cy="115.5" rx="2.6" ry="3.1"/><ellipse cx="249" cy="115.5" rx="2.6" ry="3.1"/><ellipse cx="254" cy="120" rx="2.6" ry="3.1"/></g>
+  <path d="M232 46c-6-8-18-2-12 8l12 12 12-12c6-10-6-16-12-8z" fill="#ee8a7a"/>
+  <!-- 尾巴 -->
+  <path d="M190 200c34 4 46-26 30-44" stroke="#e7ad74" stroke-width="16" stroke-linecap="round" fill="none"/>
+  <path d="M216 166c4-6 6-10 4-14" stroke="#d48f55" stroke-width="5" stroke-linecap="round" fill="none"/>
+  <!-- 身體 -->
+  <ellipse cx="140" cy="178" rx="62" ry="44" fill="#f2c592"/>
+  <ellipse cx="140" cy="186" rx="34" ry="28" fill="#fbe7cf"/>
+  <!-- 耳朵 -->
+  <path d="M74 74L66 24c-1-6 4-9 9-6l40 26z" fill="#f2c592" stroke="#f2c592" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M206 74l8-50c1-6-4-9-9-6l-40 26z" fill="#f2c592" stroke="#f2c592" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M80 60l-5-26 22 16z" fill="#f6b3a6"/>
+  <path d="M200 60l5-26-22 16z" fill="#f6b3a6"/>
+  <!-- 頭 -->
+  <ellipse cx="140" cy="102" rx="78" ry="62" fill="#f2c592"/>
+  <path d="M126 46c2 8 2 14 0 20M140 44v22M154 46c-2 8-2 14 0 20" stroke="#e0a26c" stroke-width="5" stroke-linecap="round"/>
+  <!-- 眼睛 -->
+  <ellipse cx="108" cy="104" rx="9" ry="10" fill="#4a3426"/><circle cx="111" cy="100" r="3.2" fill="#fff"/>
+  <ellipse cx="172" cy="104" rx="9" ry="10" fill="#4a3426"/><circle cx="175" cy="100" r="3.2" fill="#fff"/>
+  <!-- 腮紅、鼻子、嘴巴 -->
+  <ellipse cx="92" cy="124" rx="11" ry="7" fill="#f4a6a0" opacity=".75"/>
+  <ellipse cx="188" cy="124" rx="11" ry="7" fill="#f4a6a0" opacity=".75"/>
+  <path d="M135 116h10l-5 6z" fill="#e47d74" stroke="#e47d74" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M130 124c3 6 8 6 10 0 2 6 7 6 10 0" stroke="#4a3426" stroke-width="3" stroke-linecap="round" fill="none"/>
+  <!-- 鬍鬚 -->
+  <path d="M70 112l-22-4M70 120l-22 2M210 112l22-4M210 120l22 2" stroke="#c99a6e" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- 前腳 -->
+  <ellipse cx="114" cy="214" rx="16" ry="10" fill="#f8d8b3"/><ellipse cx="166" cy="214" rx="16" ry="10" fill="#f8d8b3"/>
+  <path d="M108 210v6M114 209v7M120 210v6M160 210v6M166 209v7M172 210v6" stroke="#e0a26c" stroke-width="2" stroke-linecap="round"/>
+</svg>
+</div>
+    <aside class="notes">今天用 3 分鐘，整理第一次去貓咪咖啡廳前最需要知道的事。內容全部來自喵館誌 Wiki 收錄的 30 家店。</aside>
+  </section>
+
+  <section class="slide" data-layout="cards">
+    <p class="kicker">01｜先選類型</p>
+    <h2>貓咖大致分三種</h2>
+    <p class="lead">先想清楚你想要什麼樣的體驗。</p>
+    <div class="cards">
+      <div class="card"><div class="icon">☕</div><h3>店貓型</h3><p>咖啡廳自己的貓，數量較少</p></div>
+      <div class="card"><div class="icon">✨</div><h3>品種貓型</h3><p>布偶、緬因等品種貓</p></div>
+      <div class="card"><div class="icon">🏠</div><h3>中途送養型</h3><p>貓在等新家，可以認養</p></div>
+    </div>
+    <aside class="notes">如果你想順便幫助流浪貓，可以選中途送養型；Wiki 目前收錄 5 家。</aside>
+  </section>
+
+  <section class="slide" data-layout="compare">
+    <p class="kicker">02｜看懂收費</p>
+    <h2>同樣是貓咖，收費差很多</h2>
+    <div class="cards">
+      <div class="card"><h3>低消制</h3><p>至少點一杯飲品或一定金額</p></div>
+      <div class="card"><h3>入場費制</h3><p>先付入場費，通常可折抵</p></div>
+      <div class="card"><h3>門票制</h3><p>付門票進場</p></div>
+      <div class="card"><h3>計時制</h3><p>依時間收費，常有封頂</p></div>
+    </div>
+    <p class="tip">⚠️「不限時」不一定不另外收費。</p>
+    <aside class="notes">例如有一家店標榜不限時，實際上前 100 分鐘會計費。出發前先看清楚是哪一種。</aside>
+  </section>
+
+  <section class="slide" data-layout="list">
+    <p class="kicker">03｜帶小孩</p>
+    <h2>不是每家都能帶小孩</h2>
+    <p class="lead">沒寫年齡規定，不代表沒有限制。</p>
+    <ul>
+      <li>有店家不開放 12 歲以下</li>
+      <li>也有店家要滿 13 歲，還會查證件</li>
+      <li>有些店被推薦適合親子</li>
+    </ul>
+    <aside class="notes">Wiki 裡至少 3 家臺北店家有年齡限制。帶小孩的話，出發前一定要先問。</aside>
+  </section>
+
+  <section class="slide" data-layout="list">
+    <p class="kicker">04｜預約與進店</p>
+    <h2>預約、換鞋、消毒</h2>
+    <p class="lead">每家店的規矩不一樣。</p>
+    <ul>
+      <li>有的店要線上預約，有的只能現場候位</li>
+      <li>很多店要換鞋或穿鞋套</li>
+      <li>有些店要消毒後才能進貓區</li>
+    </ul>
+    <aside class="notes">例如貓谷沒預約可能進不去，而貓食光反過來不接受訂位。</aside>
+  </section>
+
+  <section class="slide" data-layout="point">
+    <p class="kicker">05｜和貓互動</p>
+    <h2>讓貓決定要不要互動</h2>
+    <p class="banner">不追・不餵・不開閃光燈</p>
+    <ul>
+      <li>看到提示牌就不要打擾</li>
+      <li>餵食只能用店家允許的方式</li>
+    </ul>
+    <aside class="notes">店貓每天會遇到很多陌生人。尊重牠們的步調，才是最受歡迎的客人。</aside>
+  </section>
+
+  <section class="slide" data-layout="point">
+    <p class="kicker">06｜出發前最後一步</p>
+    <h2>確認店還有沒有開</h2>
+    <p class="big">3<small> / 30 家已歇業</small></p>
+    <ul>
+      <li>臺中 6 家中有 3 家已經歇業</li>
+      <li>另有 4 家只有 2023 年資料，狀態待確認</li>
+    </ul>
+    <aside class="notes">貓咖變動很快，出發前一定要看店家官方的 IG 或 FB 公告。</aside>
+  </section>
+
+  <section class="slide" data-layout="ending">
+    <p class="kicker">資料來源</p>
+    <h2>資訊可能已經變動，<br>出發前請查看店家官方公告。</h2>
+    <ul>
+      <li class="src">內容來源：喵館誌 Wiki｜<a href="../../wiki/overview.html">總覽</a>、<a href="../../wiki/topics/pricing-models.html">低消與計費方式</a>、<a href="../../wiki/topics/kid-friendly.html">年齡限制與親子友善</a>、<a href="../../wiki/topics/visiting-etiquette.html">拜訪禮儀</a>、<a href="../../wiki/topics/adoption-cafes.html">中途送養貓咖啡</a></li>
+      <li class="src">圖片來源：原創 Q 版貓咪 SVG 插圖，未使用外部照片</li>
+      <li class="src"><a href="../../">回到喵館誌首頁 →</a></li>
+    </ul>
+    <aside class="notes">想看每家店的詳細資料，可以到喵館誌網站查詢。</aside>
+  </section>
+</main>
+</div>
+<div class="bar"></div>
+<div class="brand">喵館誌</div>
+<div class="count"></div>
+<div class="hint">← → 翻頁　N 講者備註　F 全螢幕</div>
+<script>
+(function () {
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var bar = document.querySelector('.bar'), count = document.querySelector('.count');
+  var i = Math.max(0, Math.min(slides.length - 1, (parseInt(location.hash.slice(1), 10) || 1) - 1));
+  function show(n) {
+    i = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach(function (s, k) { s.classList.toggle('active', k === i); s.classList.toggle('prev', k < i); });
+    bar.style.width = ((i + 1) / slides.length * 100) + '%';
+    count.textContent = (i + 1) + ' / ' + slides.length;
+    history.replaceState(null, '', '#' + (i + 1));
+  }
+  document.addEventListener('keydown', function (e) {
+    if (['ArrowRight', 'PageDown', ' ', 'Enter'].indexOf(e.key) > -1) { e.preventDefault(); show(i + 1); }
+    else if (['ArrowLeft', 'PageUp', 'Backspace'].indexOf(e.key) > -1) { e.preventDefault(); show(i - 1); }
+    else if (e.key === 'Home') show(0);
+    else if (e.key === 'End') show(slides.length - 1);
+    else if (e.key === 'n' || e.key === 'N') document.body.classList.toggle('show-notes');
+    else if (e.key === 'f' || e.key === 'F') { if (!document.fullscreenElement) document.documentElement.requestFullscreen && document.documentElement.requestFullscreen(); else document.exitFullscreen(); }
+  });
+  document.addEventListener('click', function (e) {
+    if (e.target.closest('a')) return;
+    show(e.clientX > window.innerWidth / 2 ? i + 1 : i - 1);
+  });
+  var x0 = null;
+  document.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; }, { passive: true });
+  document.addEventListener('touchend', function (e) {
+    if (x0 === null) return; var dx = e.changedTouches[0].clientX - x0;
+    if (Math.abs(dx) > 40) show(dx < 0 ? i + 1 : i - 1); x0 = null;
+  });
+  show(i);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+# 簡報清單：新增簡報時在這裡加一筆（AGENTS.md 11.3）
+- title: 第一次去貓咖，先看這 3 分鐘
+  path: /decks/2026-11-15-first-visit-guide/
+  minutes: 3
+  summary: 出發前查三件事，到店後讓貓決定。整理自 Wiki 的收費、年齡、禮儀主題。
+  slides: slides/2026-11-15-first-visit-guide.md
+  note: notes/2026-11-15-first-visit-guide.md

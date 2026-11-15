@@ -1,0 +1,7 @@
+<svg class="cat-face" viewBox="0 0 48 44" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <path d="M8 18L6 3c0-2 2-3 3-2l12 8zM40 18l2-15c0-2-2-3-3-2L27 9z" fill="#e7ad74"/>
+  <ellipse cx="24" cy="26" rx="20" ry="17" fill="#f2c592"/>
+  <circle cx="16.5" cy="26" r="2.8" fill="#4a3426"/><circle cx="31.5" cy="26" r="2.8" fill="#4a3426"/>
+  <ellipse cx="12" cy="32" rx="3.5" ry="2.2" fill="#f4a6a0"/><ellipse cx="36" cy="32" rx="3.5" ry="2.2" fill="#f4a6a0"/>
+  <path d="M21.5 31h5l-2.5 3z" fill="#e47d74"/>
+</svg>

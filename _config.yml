@@ -1,0 +1,26 @@
+title: 喵館誌
+description: 台灣貓咪咖啡廳 Wiki｜由 AI 依 AGENTS.md 規則持續整理的知識庫
+lang: zh-Hant-TW
+markdown: kramdown
+kramdown:
+  input: GFM
+plugins:
+  - jekyll-relative-links
+  - jekyll-optional-front-matter
+  - jekyll-titles-from-headings
+relative_links:
+  enabled: true
+  collections: false
+exclude:
+  - raw/
+  - notes/
+  - slides/
+  - AGENTS.md
+  - CLAUDE.md
+  - README.md
+  - scripts/
+  - Gemfile
+  - Gemfile.lock
+defaults:
+  - scope: { path: "wiki" }
+    values: { layout: page }

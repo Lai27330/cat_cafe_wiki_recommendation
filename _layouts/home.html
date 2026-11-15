@@ -1,0 +1,139 @@
+---
+layout: default
+---
+{% comment %}
+  首頁：全部由 frontmatter 自動產生，新增店家時不需要修改這個檔案。
+  店家 = type: cafe；主題 = type: topic；簡報 = _data/decks.yml
+{% endcomment %}
+{% assign cafes = site.pages | where: "type", "cafe" %}
+{% assign topics = site.pages | where: "type", "topic" | sort: "title" %}
+{% assign open = cafes | where: "status", "營業中" %}
+{% assign city_codes = cafes | map: "city" | uniq %}
+
+<section class="hero">
+  <div class="wrap hero-inner">
+    <div>
+      <p class="eyebrow">台灣貓咪咖啡廳 Wiki</p>
+      <h1>找一間貓咖，<br>先讀懂再出發。</h1>
+      <p class="lead">整理全台貓咪咖啡廳的收費、限時、年齡規定與店貓資訊。每一條資料都附來源，也標出彼此矛盾和可能過時的地方。</p>
+      <div class="stats">
+        <div><strong>{{ cafes.size }}</strong><span>家店</span></div>
+        <div><strong>{{ city_codes.size }}</strong><span>個縣市</span></div>
+        <div><strong>{{ open.size }}</strong><span>家營業中</span></div>
+      </div>
+    </div>
+    {% include art/cat-hero.svg %}
+  </div>
+</section>
+
+<main class="wrap">
+  <section id="cafes" class="block">
+    <div class="block-head">
+      <h2>{% include art/paw.svg %}依地區找店家</h2>
+      <a href="{{ '/wiki/overview.html' | relative_url }}">看整體觀察 →</a>
+    </div>
+
+    <div class="toolbar">
+      <input id="q" type="search" placeholder="搜尋店名、行政區或特色，例如：布偶、不限時、中途" aria-label="搜尋店家">
+      <div class="filters" role="group" aria-label="類型篩選">
+        <button class="filter on" data-type="">全部</button>
+        <button class="filter" data-type="店貓">店貓</button>
+        <button class="filter" data-type="品種貓">品種貓</button>
+        <button class="filter" data-type="中途送養">中途送養</button>
+      </div>
+      <label class="toggle"><input id="hide-closed" type="checkbox" checked> 隱藏已歇業</label>
+    </div>
+
+    {% for c in site.data.cities %}
+      {% assign list = cafes | where: "city", c.code | sort: "title" %}
+      {% if list.size > 0 %}
+      <section class="city" data-city>
+        <h3><a href="{{ '/wiki/regions/' | append: c.code | append: '.html' | relative_url }}">{{ c.name }}</a> <small>{{ list.size }} 家</small></h3>
+        <div class="grid">
+          {% for p in list %}
+          {% case p.status %}{% when '營業中' %}{% assign st = 'open' %}{% when '暫停營業' %}{% assign st = 'paused' %}{% when '已歇業' %}{% assign st = 'closed' %}{% else %}{% assign st = 'unknown' %}{% endcase %}
+          <a class="card" href="{{ p.url | relative_url }}"
+             data-type="{{ p.cafe_type | join: ' ' }}" data-status="{{ st }}"
+             data-text="{{ p.title }} {{ p.aliases | join: ' ' }} {{ p.district }} {{ p.summary }} {{ p.features | join: ' ' }} {{ p.time_limit }} {{ p.cafe_type | join: ' ' }}">
+            <div class="card-top"><span class="status status-{{ st }}">{{ p.status }}</span><span class="district">{{ p.district }}</span></div>
+            <h4>{{ p.title }}</h4>
+            <p>{{ p.summary }}</p>
+            <ul class="quick">
+              <li><span class="qi">📍</span>{{ c.name }} {{ p.district }}</li>
+              <li><span class="qi">🐱</span>{{ p.cat_count }}</li>
+              <li><span class="qi">⏳</span>{{ p.time_limit }}</li>
+            </ul>
+            <div class="card-meta">
+              {% for t in p.cafe_type %}<span class="chip">{{ t }}</span>{% endfor %}
+              <span class="more-link">看更多 →</span>
+            </div>
+          </a>
+          {% endfor %}
+        </div>
+      </section>
+      {% endif %}
+    {% endfor %}
+    <p id="empty" class="empty" hidden>找不到符合的店家，換個關鍵字試試。</p>
+  </section>
+
+  <section id="topics" class="block">
+    <div class="block-head"><h2>{% include art/paw.svg %}主題整理</h2></div>
+    <div class="grid topics">
+      {% for t in topics %}
+      <a class="card topic" href="{{ t.url | relative_url }}"><h4>{{ t.title }}</h4><p>{{ t.summary }}</p></a>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section id="decks" class="block">
+    <div class="block-head"><h2>{% include art/paw.svg %}簡報</h2></div>
+    {% if site.data.decks.size > 0 %}
+    <div class="grid topics">
+      {% for d in site.data.decks %}
+      <a class="card deck" href="{{ d.path | relative_url }}"><span class="chip soft">約 {{ d.minutes }} 分鐘</span><h4>{{ d.title }}</h4><p>{{ d.summary }}</p></a>
+      {% endfor %}
+    </div>
+    {% else %}<p class="muted">目前還沒有簡報。</p>{% endif %}
+  </section>
+
+  <section class="block about">
+    <h2>{% include art/paw.svg %}這個網站怎麼運作？</h2>
+    <ol>
+      <li><strong>蒐集</strong>：把網路推薦文存成重點筆記（原始資料不公開，只保留出處）。</li>
+      <li><strong>整理</strong>：AI 依照專案規則 <code>AGENTS.md</code>，把資料寫進店家、地區、主題頁，並標出矛盾。</li>
+      <li><strong>延伸</strong>：提出問題時，AI 只根據 Wiki 內容寫研究筆記，再做成簡報。</li>
+    </ol>
+    <p class="muted">靈感來自 Andrej Karpathy 的「LLM Wiki」：知識整理一次就好，之後持續保持最新。</p>
+  </section>
+</main>
+
+<script>
+(function () {
+  var q = document.getElementById('q'), hide = document.getElementById('hide-closed');
+  var type = '', btns = document.querySelectorAll('.filter');
+  btns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      type = b.dataset.type;
+      btns.forEach(function (x) { x.classList.toggle('on', x === b); });
+      apply();
+    });
+  });
+  q.addEventListener('input', apply);
+  hide.addEventListener('change', apply);
+  function apply() {
+    var kw = q.value.trim().toLowerCase(), shown = 0;
+    document.querySelectorAll('[data-city]').forEach(function (sec) {
+      var n = 0;
+      sec.querySelectorAll('.card').forEach(function (c) {
+        var ok = (!type || c.dataset.type.indexOf(type) !== -1) &&
+                 (!hide.checked || c.dataset.status !== 'closed') &&
+                 (!kw || c.dataset.text.toLowerCase().indexOf(kw) !== -1);
+        c.hidden = !ok; if (ok) n++;
+      });
+      sec.hidden = n === 0; shown += n;
+    });
+    document.getElementById('empty').hidden = shown > 0;
+  }
+  apply();
+})();
+</script>

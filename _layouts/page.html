@@ -1,0 +1,10 @@
+---
+layout: default
+---
+<main class="wrap article">
+  <nav class="crumbs"><a href="{{ '/' | relative_url }}">首頁</a>{% if page.type %} / {% case page.type %}{% when 'region' %}地區{% when 'topic' %}主題{% when 'source' %}來源{% when 'cat' %}店貓{% when 'overview' %}總覽{% when 'index' %}目錄{% when 'log' %}日誌{% else %}頁面{% endcase %}{% endif %}</nav>
+  <div class="prose">
+    {{ content }}
+  </div>
+  {% if page.updated %}<p class="updated">本頁更新於 {{ page.updated }}</p>{% endif %}
+</main>
