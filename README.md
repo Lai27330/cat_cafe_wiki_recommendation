@@ -1,4 +1,4 @@
-# 喵咖日誌｜台灣貓咪咖啡廳 Wiki
+# 喵館誌｜台灣貓咪咖啡廳 Wiki
 
 一個由 AI 依照 **[AGENTS.md](./AGENTS.md)** 規則持續整理的台灣貓咪咖啡廳知識庫，參考 Andrej Karpathy 的「LLM Wiki」模式。
 
